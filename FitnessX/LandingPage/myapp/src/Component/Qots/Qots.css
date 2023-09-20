@@ -1,0 +1,44 @@
+#call-to-action {
+  padding: 120px 0px !important;
+  background-image: url("../../assets/images//cta-bg.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+}
+
+.container {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.cta-content h2 {
+  font-size: 36px !important;
+  text-transform: uppercase !important;
+  font-weight: 800 !important;
+  color: #fff !important;
+  letter-spacing: 0 !important;
+  font-weight: revert !important;
+}
+
+.cta-content h2 em {
+  font-style: normal !important;
+}
+
+.cta-content p {
+  font-size: 16px !important;
+  color: #fff !important;
+  margin: 15px 0px 25px 0px !important;
+}
+
+#call-to-action .container .row {
+  width: 98vw !important;
+}
+
+.cta-content {
+  width: 59%;
+  margin: auto;
+}

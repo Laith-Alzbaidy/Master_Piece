@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+
+.card-chart {
+  width: 100% !important;
+}
+
+.cahrt {
+  width: 100% !important;
+  height: 100% !important
+}
+
+.circle-red {
+  background: rgb(255, 160, 180);
+}
+

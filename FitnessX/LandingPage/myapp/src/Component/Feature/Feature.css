@@ -1,0 +1,36 @@
+.feature {
+  width: 72%;
+}
+
+.feature h2 {
+  font-weight: bold;
+  font-size: 40px;
+}
+
+.feature h4 {
+  font-weight: bold;
+  font-size: 17px;
+}
+
+
+.image-feature {
+  position: relative !important;
+}
+
+.icon-feature {
+  height: 60px;
+  width: 60px;
+  background: var(--btn-bg);
+  position: absolute;
+  right: 0;
+  top: -25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.icon-feature img {
+  width: 45px !important;
+
+}
