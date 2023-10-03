@@ -31,20 +31,22 @@ app.use(upload.single("image"));
 app.use("/api/v1/users", UserRouter);
 //endpoint to verify the email
 app.get("/verify/:token", async (req, res) => {
+  const token = req.params.token;
   try {
-    const token = req.params.token;
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-
-    console.log("decodedToken", decodedToken);
-    const user = await User.findById(decodedToken.id);
-    console.log("-------------aaaaa--------------", user.verified);
+    const user = await User.findOne({ verificationToken: token });
+    console.log("-------------aaaaa--------------", user);
     if (!user) {
       return res.status(404).json({ message: "Invalid verification token" });
     }
-
-    await User.findByIdAndUpdate(decodedToken.id, { verified: true }); //
-
-    console.log("cccccccccccccccccccccccc", user);
+    const updatedUser = await User.findOneAndUpdate(
+      { verificationToken: token },
+      { verified: true, verificationToken: null },
+      { new: true }
+    );
+    console.log(
+      "-------------------------------------------------------",
+      updatedUser
+    );
     res.status(200).json({ message: "Email verified successfully" });
   } catch (error) {
     res.status(500).json({ message: "Email Verificatioion Failed" });

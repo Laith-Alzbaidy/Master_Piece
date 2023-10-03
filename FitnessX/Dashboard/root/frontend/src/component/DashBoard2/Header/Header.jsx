@@ -2,9 +2,10 @@ import React, { useContext } from "react";
 import { AdminContext } from "../../../context";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+
 const Header = () => {
   const navigate = useNavigate();
-  const { profileadmin } = useContext(AdminContext);
+  const { profileadmin, contactus, DeleteContact } = useContext(AdminContext);
 
   const logOut = () => {
     Cookies.remove("jwt");
@@ -68,17 +69,32 @@ const Header = () => {
               data-bs-toggle="dropdown"
             >
               <i class="fa-solid fa-bell"></i>
+              <i class="bi bi-circle-fill">{contactus.length}</i>
             </a>
 
             <div className="dropdown-menu notifications">
               <div className="topnav-dropdown-header">
                 <span className="notification-title">Notifications</span>
-                <a className="clear-noti">Clear All</a>
+                <button onClick={DeleteContact} className="clear-noti">
+                  Clear All
+                </button>
               </div>
               <div className="noti-content">
-                <ul className="notification-list">
-                  {/* Individual Notifications */}
-                  {/* ... */}
+                <ul className="notification-list flex flex-col items-center justify-center">
+                  {contactus.map((elem, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="border p-3 rounded-lg shadow-lg p-10 mb-1 w-100 flex flex-col items-center bg-white text-gray-800"
+                      >
+                        <span className="font-semibold text-lg mb-2">
+                          {elem.subject}
+                        </span>
+                        <span className="text-sm">{elem.email}</span>
+                        <p className="text-sm mt-2">{elem.message}</p>
+                      </div>
+                    );
+                  })}
                 </ul>
               </div>
               <div className="topnav-dropdown-footer">

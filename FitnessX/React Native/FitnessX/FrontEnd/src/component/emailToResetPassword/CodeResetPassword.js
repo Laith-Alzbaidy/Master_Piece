@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import {
   View,
   TextInput,
@@ -14,9 +14,13 @@ import { useRoute } from "@react-navigation/native";
 const CodeResetPassword = ({ navigation }) => {
   const { user, VerificationCodeToResetPassword, SendEmailToResetPassword } =
     useContext(DataContext);
+  const route = useRoute();
   const { params } = useRoute();
   const { email } = params;
   // const email = navigation.getParam("email");
+  const inputRefs = [useRef(), useRef(), useRef(), useRef()]; // Create a ref for input fields
+
+  const [inputFocus, setInputFocus] = useState(null);
   console.log("aaa", email);
   const [code, setCode] = useState({
     digit1: "",
@@ -25,12 +29,14 @@ const CodeResetPassword = ({ navigation }) => {
     digit4: "",
   });
 
-  const handleChangeText = (text, key) => {
-    // Ensure only numbers are entered and limit the length to 1 digit
+  const handleChangeText = (text, key, index) => {
     const formattedText = text.slice(0, 1);
     setCode((prevCode) => ({ ...prevCode, [key]: formattedText }));
+    if (formattedText.length === 1 && index < inputRefs.length - 1) {
+      // Move focus to the next input field
+      inputRefs[index + 1].current.focus();
+    }
   };
-
   const handleVerify = async () => {
     const verificationCode = Object.values(code).join(""); // Combine code digits
 
@@ -48,7 +54,7 @@ const CodeResetPassword = ({ navigation }) => {
 
         if (response.status === 200) {
           // Handle success
-          navigation.navigate("ChangePasswordScreen", { email });
+          navigation.navigate("IconAnimation", { email, name: route.name });
         }
       }
     } catch (error) {
@@ -82,11 +88,17 @@ const CodeResetPassword = ({ navigation }) => {
         {Object.keys(code).map((key, index) => (
           <TextInput
             key={index}
-            style={styles.input}
+            style={[
+              styles.input,
+              inputFocus === index ? styles.inputFocused : null,
+            ]}
             keyboardType="numeric"
             value={code[key]}
-            onChangeText={(text) => handleChangeText(text, key)}
+            onChangeText={(text) => handleChangeText(text, key, index)}
             maxLength={1}
+            ref={inputRefs[index]} // Use ref directly
+            onFocus={() => setInputFocus(index)}
+            onBlur={() => setInputFocus(null)}
           />
         ))}
       </View>
@@ -140,6 +152,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  inputFocused: {
+    borderColor: "#95acfe",
+    borderWidth: 2,
   },
 });
 

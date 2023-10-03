@@ -2,6 +2,7 @@ const User = require("../models/modelUser");
 const cloudinary = require("../utils/cloudinary");
 // Get all users
 exports.GetUsers = async (req, res) => {
+  
   try {
     const user = await User.find();
     res.status(200).json({
@@ -59,9 +60,10 @@ exports.GetUsers = async (req, res) => {
 exports.UpdateUser = async (req, res) => {
   // Extract the user ID from the params
   const { firstname, lastname, weight, height } = req.body;
+  console.log("+++++++++++++++++++++", req.body);
   const userId = req.params.id;
   const image = req.file.path;
-  console.log("+++++++++++++++++++++", image);
+  // console.log("+++++++++++++++++++++", image);
   try {
     if (!req.file) {
       return res.status(400).json({ message: "No image file provided" });
@@ -171,38 +173,35 @@ exports.UpdateUserImage = async (req, res) => {
   const userId = req.params.id;
 
   const { firstname, lastname, weight, height } = req.body;
-  // console.log("**************", req.body);
+
   console.log("***************", req.body);
-  console.log("////////////////", req.file);
   try {
     // Check if an image file is provided
-    if (!req.file) {
-      return res.status(400).json({ message: "No image file provided" });
+    const user = await User.findById(userId);
+    // console.log(user)
+    let newimage = user.image;
+    // console.log(newimage);
+    if (req.file) {
+      const image = req.file.path;
+      // Upload the image to Cloudinary
+      const result = await cloudinary.uploader.upload(image, {
+        folder: "Training",
+        width: 800,
+        height: 600,
+        crop: "limit",
+      });
+      newimage = result.secure_url;
+      // console.log("result", result.secure_url);
     }
 
-    const image = req.file.path;
-
-    // Upload the image to Cloudinary
-    const result = await cloudinary.uploader.upload(image, {
-      folder: "Training",
-      width: 800,
-      height: 600,
-      crop: "limit",
-    });
-
-    console.log("result", result.secure_url);
-
+    console.log();
     // Find the user by their ID and update their image URL, first name, and last name
     const updatedUser = await User.findByIdAndUpdate(
       userId,
+      { ...req.body, image : newimage },
       {
-        image: result.secure_url,
-        firstname,
-        lastname,
-        weight,
-        height,
-      },
-      { new: true }
+        new: true,
+      }
     );
 
     console.log("11111111111");

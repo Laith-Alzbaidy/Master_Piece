@@ -54,6 +54,7 @@ exports.LoginUser = async (req, res) => {
     });
   }
   const token = signToken(user._id);
+
   res.status(200).json({
     status: "sucsess",
     token,

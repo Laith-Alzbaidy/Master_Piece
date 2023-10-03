@@ -20,7 +20,6 @@ const BottomTab = () => {
           } else if (route.name === "Profile") {
             iconName = "person"; // Set the appropriate icon name for the "Profile" tab
           }
-
           // You can customize the icon style as needed, e.g., change the color and size
           return <MaterialIcons name={iconName} size={size} color={color} />;
         },

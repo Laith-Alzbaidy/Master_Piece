@@ -18,6 +18,10 @@ const UsersSchema = new mongoose.Schema({
       message: "Passwords do not match.",
     },
   },
+  statusAccount: {
+    type: String,
+    default: "active",
+  },
   gender: { type: String },
   birthdate: { type: String },
   weight: { type: Number },

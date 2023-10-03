@@ -17,6 +17,30 @@ function AdminProvidor({ children }) {
   const [training, setTraining] = useState([]);
   const [exercises, setExercises] = useState([]);
   const [profileadmin, setProfileAdmin] = useState({});
+  const [contactus, setContactUs] = useState([]);
+
+  const GetAllContact = async () => {
+    try {
+      const response = await axios.get("api/v1/contact");
+
+      setContactUs(response.data.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const DeleteContact = async () => {
+    try {
+      const response = await axios.delete("api/v1/contact");
+      GetAllContact();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    GetAllContact();
+  }, []);
+
   // State to manage form data
   // -----------admins--------------------------------------------------------------------------------------------------------------
   const [DataFormsAdmins, SetDataFormsAdmins] = useState({
@@ -285,6 +309,7 @@ function AdminProvidor({ children }) {
     }
   };
 
+  
   // -----------Exercises--------------------------------------------------------------------------------------------------------------
 
   // Object to Share Data in Comment
@@ -309,6 +334,8 @@ function AdminProvidor({ children }) {
     SetDataFormsExercise,
     profileadmin,
     isAuthenticated,
+    contactus,
+    DeleteContact,
   };
 
   // Wrap children components with the context provider

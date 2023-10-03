@@ -8,7 +8,9 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { DataContext } from "../../context";
+import LottieView from "lottie-react-native";
 
+// animation_lmxz8lh3
 const SendResetPassword = ({ navigation }) => {
   const { SendEmailToResetPassword } = useContext(DataContext);
 
@@ -16,6 +18,12 @@ const SendResetPassword = ({ navigation }) => {
 
   return (
     <View style={styles.containerScreen}>
+      <LottieView
+        style={styles.iconsHeader}
+        source={require("../../assets/Icon/animation_lmxzius5")}
+        autoPlay
+        loop
+      />
       <View style={styles.containerHeader}>
         <Text style={styles.headerTitle}>Enter Your Email</Text>
       </View>
@@ -45,7 +53,7 @@ const SendResetPassword = ({ navigation }) => {
 const styles = StyleSheet.create({
   containerHeader: {
     alignItems: "center",
-    marginVertical: 30,
+    marginVertical: 10,
   },
 
   headerTitle: {
@@ -68,6 +76,11 @@ const styles = StyleSheet.create({
   icon: {
     marginHorizontal: 15,
     color: "#7B6F72",
+  },
+  iconsHeader: {
+    alignSelf: "center",
+    width: 300, // Set your desired width
+    height: 300, // Set your desired height
   },
   input: {
     flex: 1,

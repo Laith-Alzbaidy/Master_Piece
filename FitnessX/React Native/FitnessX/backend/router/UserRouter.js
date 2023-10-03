@@ -18,20 +18,22 @@ router.route("/:id").patch(Controlleruser.UpdateUserImage);
 router.route("/forgotpassword").post(ResetPassword.SendEmailResetPassword);
 router.route("/verifyCodePassword").post(ResetPassword.ResetPassword);
 router.route("/ChangePassword").post(ResetPassword.ChangePassword);
-router.get(
-  "/profileWithLogin",
-  AuthenticateUser.authenticateTokenLogin,
-  (req, res) => {
-    // You can access the authenticated user object from req.user
-    const user = req.user;
-    res.status(200).json({
-      status: "success",
-      user,
-    });
-  }
-);
+router.route("/verify").post(AuthenticateUser.sendVerificationEmail);
 
-// router.route("/verify/:token").get(AuthenticateUser.VerfiyEmail);
+// router.get(
+//   "/profileWithLogin",
+//   AuthenticateUser.authenticateTokenLogin,
+//   (req, res) => {
+//     // You can access the authenticated user object from req.user
+//     const user = req.user;
+//     res.status(200).json({
+//       status: "success",
+//       user,
+//     });
+//   }
+// );s
+
+// router.route("/verify/:token").post(AuthenticateUser.sendVerificationEmail);
 
 // router.route("/upload").post(Controlleruser.UploadImage);
 // Export the router to be used in other parts of the application

@@ -7,6 +7,7 @@ const ProfilePage = ({ navigation }) => {
   // Replace these with actual user data, including the image URI
   const { user, removeToken } = useContext(DataContext);
 
+  console.log(user);
   const calculateAge = (birthdate) => {
     const currentDate = new Date();
     const timeDifference = currentDate - birthdate;
@@ -14,7 +15,7 @@ const ProfilePage = ({ navigation }) => {
     const yearsDifference = timeDifference / millisecondsInYear;
     return Math.floor(yearsDifference);
   };
-
+  console.log("-------------------", user.image);
   return (
     <View
       style={{

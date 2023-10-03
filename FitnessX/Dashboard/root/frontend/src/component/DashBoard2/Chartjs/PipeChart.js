@@ -6,13 +6,14 @@ import { useContext } from "react";
 
 const PipeChart = () => {
   const { exercises, training, users } = useContext(AdminContext);
-
+  const mail = users.filter((elem) => elem.gender === "Male");
+  const femail = users.filter((elem) => elem.gender === "Femail");
   const data = {
     labels: ["Femail", "Mail"],
     datasets: [
       {
         label: ["Femail", "Mail"],
-        data: [300, 50],
+        data: [mail.length, femail.length],
         backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)"],
         borderColor: ["red", "blue"],
         hoverOffset: 4,
@@ -37,16 +38,19 @@ const PipeChart = () => {
   };
   return (
     <div
-      style={
-        {
-          // height: "100%",
-          // width: "341px",
-          // display: "flex",
-          // justifyContent: "center",
-          // alignItems: "center",
-          // padding: "10px",
-        }
-      }
+      style={{
+        // height: "100%",
+        // width: "341px",
+        // display: "flex",
+        // justifyContent: "center",
+        // alignItems: "center",
+        // padding: "10px",
+
+        display: "block",
+        height: " 320px",
+        width: " 320px",
+        margin: "auto",
+      }}
     >
       <Pie data={data} option={option} />
     </div>

@@ -32,6 +32,10 @@ const UsersSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  statusAccount: {
+    type: String,
+    default: "active",
+  },
   verificationCodeExpires: Date,
   verificationCode: Number,
   verificationToken: String,
@@ -43,7 +47,7 @@ const UsersSchema = new mongoose.Schema({
   image: {
     type: String,
     default:
-      "https://res.cloudinary.com/ddct7cqr7/image/upload/v1694961155/user_1_cqjrwq.png",
+      "https://res.cloudinary.com/ddct7cqr7/image/upload/v1695492743/w56bu1wybkr4fl0nzard.png",
   },
 });
 

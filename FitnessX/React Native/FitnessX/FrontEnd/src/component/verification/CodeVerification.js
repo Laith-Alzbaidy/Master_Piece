@@ -10,10 +10,10 @@ import {
 } from "react-native";
 import api from "../../../api/api"; // Import Axios
 import { DataContext } from "../../context";
-
+import { useRoute } from "@react-navigation/native";
 const VerificationCodeInput = ({ navigation }) => {
   const { user, dataUser } = useContext(DataContext);
-
+  const route = useRoute();
   useEffect(() => {
     dataUser();
   }, []);
@@ -41,16 +41,14 @@ const VerificationCodeInput = ({ navigation }) => {
       });
       console.log("response", response.data.message);
       if (response.status === 200) {
-        Alert.alert("Success", "Email verified successfully");
-        navigation.navigate("CompleteProfileScreen"); // Navigate to the next screen upon successful verification
+        // Alert.alert("Success", "Email verified successfully");
+        navigation.navigate("IconAnimation", { name: route.name }); // Navigate to the next screen upon successful verification
       } else {
         Alert.alert("Error", response.data.message || "Verification failed");
       }
     } catch (error) {
       console.error("Error verifying email:", error);
       Alert.alert("Error", "Verification failed");
-
-      
     }
   };
 

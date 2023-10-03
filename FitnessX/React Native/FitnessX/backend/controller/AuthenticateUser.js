@@ -1,6 +1,7 @@
 const User = require("../models/modelUser");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const crypto = require("crypto"); // For generating secure tokens
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -16,7 +17,6 @@ const generateVerificationCode = () => {
 // Function to send a verification email
 const sendVerificationEmail = async (user, verificationToken) => {
   const verificationCode = generateVerificationCode();
-
   try {
     console.log(user);
     console.log(verificationToken);
@@ -27,6 +27,7 @@ const sendVerificationEmail = async (user, verificationToken) => {
         pass: "twmxfenbjfbwxrri",
       },
     });
+
     const mailOptions = {
       from: "laithalzbaidy@gmail.com",
       to: user.email,
@@ -269,28 +270,28 @@ exports.LoginUser = async (req, res) => {
   }
 };
 
-exports.authenticateTokenLogin = async (req, res, next) => {
-  const token = req.header("Authorization").replace("Bearer ", "");
+// exports.authenticateTokenLogin = async (req, res, next) => {
+//   const token = req.header("Authorization").replace("Bearer ", "");
 
-  if (!token) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
+//   if (!token) {
+//     return res.status(401).json({ message: "Unauthorized" });
+//   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//   try {
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await User.findById(decoded.id);
+//     const user = await User.findById(decoded.id);
 
-    if (!user) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
+//     if (!user) {
+//       return res.status(401).json({ message: "Unauthorized" });
+//     }
 
-    req.user = user;
-    next();
-  } catch (error) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
-};
+//     req.user = user;
+//     next();
+//   } catch (error) {
+//     return res.status(401).json({ message: "Unauthorized" });
+//   }
+// };
 
 // exports.protect = async (req, res, next) => {
 //   try {
@@ -341,3 +342,43 @@ exports.authenticateTokenLogin = async (req, res, next) => {
 //     });
 //   }
 // };
+exports.sendVerificationEmail = async (req, res) => {
+  const { email } = req.body;
+  console.log("--------", email);
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail", // Example: Gmail, Outlook, etc.
+      auth: {
+        user: "laithalzbaidy@gmail.com",
+        pass: "twmxfenbjfbwxrri",
+      },
+    });
+
+    const Token = crypto.randomBytes(32).toString("hex");
+    const user = await User.findOneAndUpdate(
+      { email },
+      { verificationToken: Token },
+      {
+        new: true,
+      }
+    );
+    console.log("----", user);
+    // Generate a secure verification token
+
+    const mailOptions = {
+      from: "laithalzbaidy@gmail.com",
+      to: email,
+      subject: "Email Verification",
+      text: `Click the following link to verify your email: http://localhost:8000/verify/${Token}/`,
+    };
+
+    await transporter.sendMail(mailOptions);
+    // console.log("Verification email sent successfully to:", email);
+    return res.status(201).json({
+      status: "success",
+    });
+    return verificationToken; // You can return the token for further use if needed
+  } catch (error) {
+    console.error("Error sending verification email:", error);
+  }
+};

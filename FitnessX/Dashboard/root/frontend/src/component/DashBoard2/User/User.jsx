@@ -1,9 +1,47 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AdminContext } from "../../../context";
+import axios from "axios";
+import Swal from "sweetalert2";
 const Users = () => {
   const { users, deleteUsers } = useContext(AdminContext);
   // console.log("users", users);
+
+  const [statusAccount, setStatusAccount] = useState("");
+
+  const statusAccountOnChange = (status, userId) => {
+    setStatusAccount(status);
+    console.log(status, userId);
+    updateStatusAcount(userId, status);
+  };
+
+  const updateStatusAcount = (userId, status) => {
+    try {
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Save",
+        denyButtonText: `Don't save`,
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const response = await axios.patch(`api/v1/users/${userId}`, {
+              statusAccount: status,
+            });
+
+            Swal.fire("Saved!", "", "success");
+          } catch (error) {
+            console.error(error);
+          }
+        } else if (result.isDenied) {
+          Swal.fire("Changes are not saved", "", "info");
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="main-wrapper">
       <div className="page-wrapper">
@@ -106,6 +144,7 @@ const Users = () => {
                           <th>Name</th>
                           <th>DOB</th>
                           <th>Email</th>
+                          <th>Active/No Active</th>
                           <th className="text-end">Action</th>
                         </tr>
                       </thead>
@@ -129,15 +168,46 @@ const Users = () => {
                                   <a className="avatar avatar-sm me-2">
                                     <img
                                       className="avatar-img rounded-circle"
-                                      src=""
+                                      src={user.image}
                                       alt="User Image"
                                     />
                                   </a>
                                   <a>{user.firstname + " " + user.lastname}</a>
                                 </h2>
                               </td>
-                              <td>-------</td>
+                              {user.birthdate ? (
+                                <td>{user.birthdate}</td>
+                              ) : (
+                                <td>----</td>
+                              )}
                               <td>{user.email}</td>
+                              <td>
+                                <div className="container">
+                                  <label htmlFor="tutorialSelect">
+                                    Tutorials:
+                                  </label>
+                                  <select
+                                    defaultValue={user.statusAccount}
+                                    id="tutorialSelect"
+                                    className="form-control"
+                                    onChange={(e) =>
+                                      statusAccountOnChange(
+                                        e.target.value,
+                                        user._id
+                                      )
+                                    }
+                                  >
+                                    <option value="active">
+                                      <i className="fas fa-circle fa-xs"></i>{" "}
+                                      Active
+                                    </option>
+                                    <option value="disabled">
+                                      <i className="fas fa-circle fa-xs"></i>{" "}
+                                      Disabled
+                                    </option>
+                                  </select>
+                                </div>
+                              </td>
                               <td className="text-end">
                                 <div className="actions">
                                   <a className="btn btn-sm bg-success-light me-2">

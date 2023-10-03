@@ -38,7 +38,6 @@ const AdminSchema = new mongoose.Schema({
 AdminSchema.pre("save", async function (next) {
   // Check if the password is modified, if not, move on to the next middleware or save the document
   if (!this.isModified("password")) return next();
-
   // Hash the password using bcrypt with a cost factor of 12
   this.password = await bcrypt.hash(this.password, 12);
   this.confirmPassword = undefined;

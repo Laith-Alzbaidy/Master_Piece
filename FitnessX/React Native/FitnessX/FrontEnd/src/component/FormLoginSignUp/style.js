@@ -120,5 +120,14 @@ export const styles = StyleSheet.create({
     marginVertical: 10,
     textDecorationLine: "underline",
   },
-  
+
+  errorInput: {
+    borderColor: "red",
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 5,
+  },
+  errorText: {
+    fontSize: 12,
+  },
 });

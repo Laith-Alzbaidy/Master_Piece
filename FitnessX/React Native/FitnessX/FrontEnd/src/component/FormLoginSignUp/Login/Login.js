@@ -12,40 +12,13 @@ import { DataContext } from "../../../context";
 import ErrorText from "../../ErrTextForm/textError";
 const Login = ({ navigation }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false); // Add this state variable
-  const { handleInputLogin, loginUser, loginForm, error } =
-    useContext(DataContext);
-  const [errors, setErrors] = useState({});
-
-  // const validateForm = () => {
-  //   const valid = false;
-  //   let errors = {};
-  //   if (!loginForm.email) {
-  //     errors.email = "Email is required.";
-  //   } else if (!/\S+@\S+\.\S+/.test(email)) {
-  //     errors.email = "Email is invalid.";
-  //   }
-
-  //   // Validate password field
-  //   if (!loginForm.password) {
-  //     errors.password = "Password is required.";
-  //   } else if (password.length < 6) {
-  //     errors.password = "Password must be at least 6 characters.";
-  //   }
-
-  //   // Set the errors and update form validity
-  //   setErrors(errors);
-  //   return valid;
-  // };
-
-  // const handleSubmit = () => {
-  //   if (validateForm()) {
-  //     // Form is valid, perform the submission logic
-  //     console.log("Form submitted successfully!");
-  //   } else {
-  //     // Form is invalid, display error messages
-  //     console.log("Form has errors. Please correct them.");
-  //   }
-  // };
+  const {
+    handleInputLogin,
+    loginUser,
+    loginForm,
+    errorsLogin,
+    // handleSubmitLogin,
+  } = useContext(DataContext);
 
   // Toggle password visibility
   const togglePasswordVisibility = ({ navigation }) => {
@@ -61,7 +34,16 @@ const Login = ({ navigation }) => {
           </View>
           <View>
             {/* <ErrorText /> */}
-            <View style={styles.inputContainer}>
+            <Text style={styles.errorText}>
+              {errorsLogin.email && errorsLogin.email}
+            </Text>
+
+            <View
+              style={[
+                styles.inputContainer,
+                errorsLogin.email && styles.errorInput,
+              ]}
+            >
               <Icon
                 name="envelope"
                 size={20}
@@ -76,7 +58,15 @@ const Login = ({ navigation }) => {
                 value={loginForm.email ? loginForm.email : ""}
               />
             </View>
-            <View style={styles.inputContainer}>
+            <Text style={styles.errorText}>
+              {errorsLogin.password && errorsLogin.password}
+            </Text>
+            <View
+              style={[
+                styles.inputContainer,
+                errorsLogin.password && styles.errorInput,
+              ]}
+            >
               <Icon
                 onPress={() => console.log("layth")}
                 name="lock"

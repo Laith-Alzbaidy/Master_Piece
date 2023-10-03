@@ -1,5 +1,5 @@
 import React from "react";
-
+import axios from "axios";
 import {
   Text,
   StyleSheet,
@@ -29,6 +29,7 @@ const GetStarted = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#fff",
     flex: 1,
     justifyContent: "space-between", // Arrange children with space in-between
     alignItems: "center", // Center horizontally

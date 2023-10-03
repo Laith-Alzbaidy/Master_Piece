@@ -4,6 +4,7 @@ const UserRouter = require("./router/UserRouter");
 const ExerciseRouter = require("./router/ExerciseRouter");
 const TrainingRouter = require("./router/TrainingRouter");
 const AdminRouter = require("./router/AdminRouter");
+const ContactUsRouter = require("./router/ContactUsRouter");
 const cookieParser = require("cookie-parser");
 const multer = require("multer");
 
@@ -49,6 +50,7 @@ app.use("/api/v1/users", UserRouter);
 app.use("/api/v1/exercise", ExerciseRouter);
 app.use("/api/v1/training", TrainingRouter);
 app.use("/api/v1/Admin", AdminRouter);
+app.use("/api/v1/contact", ContactUsRouter);
 
 // app.post("/upload", uploader.single("file"), async (req, res) => {
 //   console.log("-------------------------------------------", req.file);

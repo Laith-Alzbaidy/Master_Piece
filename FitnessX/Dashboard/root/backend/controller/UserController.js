@@ -48,11 +48,13 @@ exports.GetUser = async (req, res) => {
 exports.UpdateUser = async (req, res) => {
   // Extract the user ID from the params  parameters
   const userId = req.params.id;
+  console.log("--------------", userId, req.body);
   try {
     const user = await User.findByIdAndUpdate(userId, req.body, {
       new: true, // Return the updated document as the result
     });
     // If the user is found, respond with a 200 status code and the user data
+    console.log(user);
     res.status(200).json({
       status: "success",
       data: user,
